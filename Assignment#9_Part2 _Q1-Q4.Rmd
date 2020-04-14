@@ -76,4 +76,6 @@ sad_gg_plot <- sad_gg + geom_point()+geom_smooth(method = "lm")
 sad_gg_plot
 ```
 
+#9
+
 
