@@ -68,3 +68,12 @@ sexabuse_resid_plot <- plot(sexabuse$ptsd, sexabuse_resid,
 sad_qq <- qqnorm(sexabuse_resid, xlab = "CPA Score", ylab = "Residual", plot.it = TRUE)
 ```
 
+#8 Illustrate the relationship of the explanatory variable to the response variable afteraccounting for the covariate by constructing a scatterplot with separate regression linesfor each level of the explanatory variable.
+
+```{r}
+sad_gg <- ggplot(sexabuse, aes(cpa, ptsd, color=csa))
+sad_gg_plot <- sad_gg + geom_point()+geom_smooth(method = "lm")
+sad_gg_plot
+```
+
+
