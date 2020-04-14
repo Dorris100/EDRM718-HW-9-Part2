@@ -76,4 +76,10 @@ sad_gg_plot <- sad_gg + geom_point()+geom_smooth(method = "lm")
 sad_gg_plot
 ```
 
+#9 Construct the ANCOVA table after modeling the response variable as a function of theexplanatory variable and covariate (without interaction).
+
+```{r}
+ptsd_csa_model_2 <- lm(sexabuse$ptsd~sexabuse$csa+sexabuse$cpa)
+anova(ptsd_csa_model_2)
+```
 
