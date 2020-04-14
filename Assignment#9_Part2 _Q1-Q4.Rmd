@@ -5,7 +5,7 @@ Date:"04/11/2020"
 output: html_notebook
 ---
 This is a study of the relationship of Post-traumatic stress discorder(PTSD) and childhood sexual abuse (CSA). We want to know if there is a difference in average PTSD of children of different childhood sexual abuse status after adjusting for Childhood physical abuse (CPA) score.
-```{r}
+```{r include=FALSE}
 library(tidyverse)
 library(here)
 sexabuse<-read.csv(here("Data", "Abuse.csv"))
@@ -42,3 +42,16 @@ dstat_cpa
 dstat_sd<-tapply(sexabuse$cpa,sexabuse$csa, sd)
 dstat_sd
 ```
+
+#5 Model the response variable as a function of the explanatory variable, the covariate andthe interaction of these variables and test the interaction to confirm that there is notmuch evidence of an interaction.
+
+Response variable- PTSD
+Explanatory variable- Childhood sexual abuse
+
+```{r}
+ptsd_csa_model <- lm(sexabuse$ptsd~sexabuse$csa*sexabuse$cpa)
+anova(ptsd_csa_model)
+```
+
+
+
