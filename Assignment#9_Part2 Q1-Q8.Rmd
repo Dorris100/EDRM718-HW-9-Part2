@@ -1,0 +1,79 @@
+---
+title:"EDRM718 Assignment#9"
+Author:"Katy Linich, Michael Hornsby and Ruiqin Gao"
+Date:"04/11/2020"
+output: html_notebook
+---
+This is a study of the relationship of Post-traumatic stress discorder(PTSD) and childhood sexual abuse (CSA). We want to know if there is a difference in average PTSD of children of different childhood sexual abuse status after adjusting for Childhood physical abuse (CPA) score.
+```{r include=FALSE}
+library(tidyverse)
+library(here)
+sexabuse<-read.csv(here("Data", "Abuse.csv"))
+sexabuse
+
+```
+###Question 1
+```{r}
+ggplot(data = sexabuse,aes(x=csa, y=ptsd))+
+  labs(x=" Childhood sexual abuse status (CSA)",
+       y="Post-traumatic stress disorder score (PTSD) ")+
+  geom_boxplot(color="red")+
+  ggtitle("PTSD score by CSA")
+```
+###Question 2 Let's get descriptive statistics of ptsd by csa
+```{r}
+dstat_ptsd<-tapply(sexabuse$ptsd,sexabuse$csa, summary)
+dstat_ptsd
+SD_ptsd<-tapply(sexabuse$ptsd,sexabuse$csa, sd)
+SD_ptsd
+```
+### Question 3 Let's create side-by-side boxpolot for cas abd cpa
+```{r}
+ggplot(data = sexabuse,aes(x=csa, y=cpa))+
+  labs(x=" Childhood sexual abuse status (CSA)",
+       y="Childhood physical abuse score (CPA) ")+
+  geom_boxplot(color= "blue")+
+  ggtitle("CPA score  by CSA")
+```
+#4 Let's get descriptive statistics of cpa by csa
+```{r}
+dstat_cpa<-tapply(sexabuse$cpa,sexabuse$csa, summary)
+dstat_cpa
+dstat_sd<-tapply(sexabuse$cpa,sexabuse$csa, sd)
+dstat_sd
+```
+
+#5 Model the response variable as a function of the explanatory variable, the covariate andthe interaction of these variables and test the interaction to confirm that there is notmuch evidence of an interaction.
+
+Response variable- PTSD
+Explanatory variable- Childhood sexual abuse
+
+```{r}
+ptsd_csa_model <- lm(sexabuse$ptsd~sexabuse$csa*sexabuse$cpa)
+anova(ptsd_csa_model)
+```
+
+#6 Calculate the predicted values and residuals when modeling the response variable as afunction of the explanatory variable and covariate (without interaction) and then plotthe residuals as a function of the predicted values to confirm homogeneity of variance.
+
+```{r}
+sexabuse_resid <- resid(ptsd_csa_model)
+sexabuse_resid_plot <- plot(sexabuse$ptsd, sexabuse_resid, 
+                            ylab = "residuals", xlab = "CPA score",
+                            main = "PTSD Scores")
+```
+
+#7 Calculate the residuals when modeling the response variable as a function of theexplanatory variable and covariate (without interaction) and then create a Q-Q plot ofthe residuals to confirm the condition of a normal distribution.
+
+```{r}
+sad_qq <- qqnorm(sexabuse_resid, xlab = "CPA Score", ylab = "Residual", plot.it = TRUE)
+```
+
+#8 Illustrate the relationship of the explanatory variable to the response variable afteraccounting for the covariate by constructing a scatterplot with separate regression linesfor each level of the explanatory variable.
+
+```{r}
+sad_gg <- ggplot(sexabuse, aes(cpa, ptsd, color=csa))
+sad_gg_plot <- sad_gg + geom_point()+geom_smooth(method = "lm")
+sad_gg_plot
+```
+
+
