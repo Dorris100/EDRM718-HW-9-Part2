@@ -53,5 +53,18 @@ ptsd_csa_model <- lm(sexabuse$ptsd~sexabuse$csa*sexabuse$cpa)
 anova(ptsd_csa_model)
 ```
 
+#6 Calculate the predicted values and residuals when modeling the response variable as afunction of the explanatory variable and covariate (without interaction) and then plotthe residuals as a function of the predicted values to confirm homogeneity of variance.
 
+```{r}
+sexabuse_resid <- resid(ptsd_csa_model)
+sexabuse_resid_plot <- plot(sexabuse$ptsd, sexabuse_resid, 
+                            ylab = "residuals", xlab = "CPA score",
+                            main = "PTSD Scores")
+```
+
+#7 Calculate the residuals when modeling the response variable as a function of theexplanatory variable and covariate (without interaction) and then create a Q-Q plot ofthe residuals to confirm the condition of a normal distribution.
+
+```{r}
+sad_qq <- qqnorm(sexabuse_resid, xlab = "CPA Score", ylab = "Residual", plot.it = TRUE)
+```
 
